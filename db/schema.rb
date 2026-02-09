@@ -24,7 +24,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_225703) do
     t.string "company_id"
     t.datetime "created_at", null: false
     t.string "email"
-    t.string "first name"
+    t.string "first_name"
     t.string "last_name"
     t.datetime "updated_at", null: false
   end

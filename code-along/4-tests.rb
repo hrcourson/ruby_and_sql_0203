@@ -19,13 +19,58 @@ Rails.logger.info "------------------------"
 # We already do this mentally -- "I inserted a row, let me check the count."
 # A test automates that check so we don't have to remember to do it.
 
+puts ""
+puts "=============================="
+puts "Phase 1: Manual Tests"
+puts "=============================="
+
 # --- Test: Create a company ---
+
+company = Company.new
+company["name"] = "Nike"
+company["city"] = "Beaverton"
+company["state"] = "OR"
+company.save
+
+if Company.all.count == 1
+  puts "PASS: create - company count is 1"
+else
+  puts "FAIL: create - expected 1 company, got #{Company.all.count}"
+end
 
 # --- Test: Read a company ---
 
+found = Company.find_by({ "name" => "Nike" })
+
+if found != nil && found["city"] == "Beaverton"
+  puts "PASS: read - found Nike in Beaverton"
+else
+  puts "FAIL: read - could not find Nike or city didn't match"
+end
+
 # --- Test: Update a company ---
 
+found["url"] = "https://www.nike.com"
+found.save
+
+# re-read from the database to confirm persisted
+updated = Company.find_by({ "name" => "Nike" })
+
+if updated["url"] == "https://www.nike.com"
+  puts "PASS: update - url is now https://www.nike.com"
+else
+  puts "FAIL: update - expected https://www.nike.com, got #{updated["url"]}"
+end
+
 # --- Test: Delete a company ---
+
+updated.destroy
+
+if Company.all.count == 0
+  puts "PASS: delete - company count is 0"
+else
+  puts "FAIL: delete - expected 0 companies, got #{Company.all.count}"
+end
 
 # ================================================
 # Phase 2: Real Tests (Minitest)
